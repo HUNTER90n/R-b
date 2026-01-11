@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Roblox Nuke Panel - 2026 Edition</title>
+  <style>body{background:#111;color:lime;font-family:monospace;padding:20px;}</style>
+</head>
+<body>
+<h1>ROBLOX MASS REPORT TOOL (educational only)</h1>
+
+<input id="username" placeholder="@username" style="width:300px;padding:10px;font-size:18px;">
+<input id="count" type="number" value="5" min="1" max="20" style="width:80px;padding:10px;">
+<button onclick="nuke()" style="padding:12px 30px;background:red;color:white;border:none;font-size:20px;">NUKE ACCOUNT</button>
+
+<div id="result" style="margin-top:30px;color:yellow;"></div>
+
+<script>
+async function nuke() {
+  const user = document.getElementById('username').value.trim();
+  const cnt = parseInt(document.getElementById('count').value);
+  if(!user) return alert("Enter username idiot");
+
+  document.getElementById('result').innerHTML = "Sending... might take a while...";
+
+  const res = await fetch('/report', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({username: user, count: cnt})
+  });
+
+  const data = await res.json();
+  document.getElementById('result').innerHTML = `
+    <pre>${JSON.stringify(data, null, 2)}</pre>
+    <p style="color:${data.success > 0 ? 'lime' : 'red'}">
+      ${data.success} reports "sent" (lol good luck in 2026)
+    </p>`;
+}
+</script>
+</body>
+</html>
